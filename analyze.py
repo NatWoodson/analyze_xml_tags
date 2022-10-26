@@ -37,10 +37,6 @@ def parse_xml(xmlfile):
 for filename in glob.iglob('output_dir/jobs/**', recursive=True):
     if os.path.isfile(filename) and filename.endswith('.xml'): # filter dirs
         parse_xml(filename)
-# for subdir, files in os.walk(jobs):
-#     for file in files:
-#         print(os.path.join(subdir, file))
 
-# parse_xml("output_dir/jobs/almitra-hello-world/config.xml")
 
 
