@@ -20,8 +20,6 @@ def parse_xml(xmlfile):
     root = tree.getroot()
 
     for child in list(root.iter()):
-        if child.tag == "canRoam":
-            print(xmlfile)
         if child.tag in tags:
             tags[child.tag] += 1 
         else:
@@ -39,7 +37,6 @@ for filename in glob.iglob('output_dir/jobs/**', recursive=True):
 
 
 print(f"Total num of config.xml files is: {count}")
-# pprint.pprint(tags)
 pprint.pprint(sorted(tags.items(), key=lambda item: item[1], reverse=True))
 
  
