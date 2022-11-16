@@ -12,6 +12,14 @@ try:
 except zipfile.BadZipFile as error:
     print(error)
 
+# optional parameter is tag to be searched for to view it within context of xml doc
+def main(searched_tag=None):
+    for filename in glob.iglob('output_dir/jobs/**', recursive=True):
+        if os.path.isfile(filename) and filename.endswith('config.xml'): # filter dirs
+    
+            parse_xml(filename, searched_tag)
+
+    pprint.pprint(sorted(tags.items(), key=lambda item: item[1], reverse=True))
 
 tags = {}
 
@@ -19,37 +27,22 @@ def parse_xml(xmlfile, searched_tag):
     tree = ET.parse(xmlfile)
     root = tree.getroot()
 
+    # if searched_tag, display files that contain the tag
     if searched_tag:
         for child in list(root.iter()):
             if child.tag == searched_tag:
-                break
+                print(f'File: {xmlfile}\n')   
+                print(ET.tostring(root, encoding='utf8').decode('utf8'))
+    else:
+        for child in list(root.iter()):
+            if child.tag in tags:
+                tags[child.tag] += 1 
+            else:
+                tags[child.tag] = 1
         
-    print(f'File: {xmlfile}\n')
-        
-        
-    print(ET.tostring(root, encoding='utf8').decode('utf8'))
-    # else:
-    #     for child in list(root.iter()):
-    #         if child.tag in tags:
-    #             tags[child.tag] += 1 
-    #         else:
-    #             tags[child.tag] = 1
 
-def analyze(searched_tag=None):
-    count = 0
-    for filename in glob.iglob('output_dir/jobs/**', recursive=True):
-        if os.path.isfile(filename) and filename.endswith('config.xml'): # filter dirs
-            count += 1
-    
-            parse_xml(filename, searched_tag)
-
-
-
-
-    print(f"Total num of config.xml files is: {count}")
-    pprint.pprint(sorted(tags.items(), key=lambda item: item[1], reverse=True))
-
-analyze("org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty")
+if __name__ == "__main__":
+    main()
 
  
 
