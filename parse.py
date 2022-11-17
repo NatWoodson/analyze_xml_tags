@@ -4,9 +4,10 @@ import glob, os
 import pprint
 import xml.etree.ElementTree as ET
 
+path_to_file = "jobs.zip"
 
 try:
-    with zipfile.ZipFile("jobs.zip", mode="r") as archive:
+    with zipfile.ZipFile(path_to_file, mode="r") as archive:
         for folder in archive.namelist():
                 archive.extract(folder, path="output_dir/")     
 except zipfile.BadZipFile as error:
